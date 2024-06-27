@@ -1,0 +1,34 @@
+{
+  "name": "test12_npm_package",
+  "version": "1.0.3",
+  "description": "test npm package library",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shubham-rathod1/test_npm_package"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "shubham-rathod",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shubham-rathod1/test_npm_package/issues"
+  },
+  "devDependencies": {
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "bignumber.js": "^4.0.4",
+    "ethers": "^6.13.1"
+  }
+}
