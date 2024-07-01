@@ -7,11 +7,21 @@ import {
   JsonRpcProvider,
 } from 'ethers';
 import { MetaMaskSigner } from './MetaMaskSigner';
-
 export class CustomEthers {
   public ethers: typeof ethers;
+
   constructor() {
     this.ethers = ethers;
+    return new Proxy(this, {
+      get: (target, prop) => {
+        if (prop in target) {
+          return (target as any)[prop];
+        }
+        if (prop in target.ethers) {
+          return (target.ethers as any)[prop];
+        }
+      },
+    });
   }
 
   // @notice if we want to send transaction using secret key

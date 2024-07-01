@@ -39,7 +39,7 @@ export class MetaMaskSigner implements Signer {
       // use sendTransaction because browser wallet needs to sign transaction
       return this.signer.sendTransaction(pop);
     } catch (error) {
-      console.log("Error sending Transaction",error)
+      console.log("Transaction sending error", error);
       throw error;
     }
   }
