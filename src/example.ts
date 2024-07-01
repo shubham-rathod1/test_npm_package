@@ -3,7 +3,7 @@ import { nuemaParams } from './types';
 import { CustomEthers } from './customEthers';
 
 export async function injectNeuma(
-  chainID: string,
+  chainID: number,
   value: string,
   userAddress: string
 ) {
@@ -22,10 +22,4 @@ export async function injectNeuma(
 
   const response = await customSigner.sendTransaction(tx);
   // console.log(response);
-
-  const wallet = customEthers.createWallet();
-  console.log('Address:', wallet.address);
-
-  // Use custom methods
-  customEthers.customMethod();
 }
