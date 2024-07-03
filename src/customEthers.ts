@@ -8,18 +8,18 @@ import {
 } from 'ethers';
 import { MetaMaskSigner } from './MetaMaskSigner';
 export class CustomEthers {
+  // what is and the use of index signers
+  // TO DO: create custom types later
   [x: string]: any;
-  public ethers: typeof ethers;
 
   constructor() {
-    this.ethers = ethers;
     return new Proxy(this, {
       get: function (target, prop, receiver) {
         if (prop in target) {
           return Reflect.get(target, prop, receiver);
         }
-        if (prop in target.ethers) {
-          return (target.ethers as any)[prop];
+        if (prop in ethers) {
+          return (ethers as any)[prop];
         }
         return `Property does not exist`;
       },
