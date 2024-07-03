@@ -27,7 +27,7 @@ export class CustomEthers {
   }
 
   // @notice if we want to send transaction using secret key
-
+// provider url is just for testing here
   customSigner(
     privateKey: string,
     providerUrl: string,
