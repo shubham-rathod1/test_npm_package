@@ -8,18 +8,20 @@ import {
 } from 'ethers';
 import { MetaMaskSigner } from './MetaMaskSigner';
 export class CustomEthers {
+  [x: string]: any;
   public ethers: typeof ethers;
 
   constructor() {
     this.ethers = ethers;
     return new Proxy(this, {
-      get: (target, prop) => {
+      get: function (target, prop, receiver) {
         if (prop in target) {
-          return (target as any)[prop];
+          return Reflect.get(target, prop, receiver);
         }
         if (prop in target.ethers) {
           return (target.ethers as any)[prop];
         }
+        return `Property does not exist`;
       },
     });
   }
