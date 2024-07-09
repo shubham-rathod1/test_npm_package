@@ -16,7 +16,8 @@ export class CustomEthers {
     return new Proxy(this, {
       get: function (target, prop, receiver) {
         if (prop in target) {
-          return Reflect.get(target, prop, receiver);
+          // return Reflect.get(target, prop, receiver);
+          return (target as any)[prop];
         }
         if (prop in ethers) {
           return (ethers as any)[prop];
@@ -27,7 +28,7 @@ export class CustomEthers {
   }
 
   // @notice if we want to send transaction using secret key
-// provider url is just for testing here
+  // provider url is just for testing here
   customSigner(
     privateKey: string,
     providerUrl: string,

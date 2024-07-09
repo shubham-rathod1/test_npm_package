@@ -31,13 +31,13 @@ export class MetaMaskSigner implements Signer {
     // Custom logic before sending the transaction
     try {
       console.log('Custom sendTransaction called');
-      const pop = await this.signer.populateTransaction(tx);
-      delete pop.from;
-      pop.to = '0x99A221a87b3C2238C90650fa9BE0F11e4c499D06';
-      console.log('tx obj before sending', pop);
+      // const pop = await this.signer.populateTransaction(tx);
+      // delete pop.from;
+      // pop.to = '0x99A221a87b3C2238C90650fa9BE0F11e4c499D06';
+      // console.log('tx obj before sending', pop);
       // return await this.provider.broadcastTransaction(pop);
       // use sendTransaction because browser wallet needs to sign transaction
-      return this.signer.sendTransaction(pop);
+      return this.signer.sendTransaction(tx);
     } catch (error) {
       console.log("Transaction sending error", error);
       throw error;
